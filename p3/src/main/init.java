@@ -1,5 +1,4 @@
 package main;
-
 import java.awt.EventQueue;
 
 import javax.swing.UIManager;
@@ -28,11 +27,15 @@ public class init {
 							.equals(UIManager
 									.getCrossPlatformLookAndFeelClassName())) {
 			            UIManager.setLookAndFeel("javax."
-			            		+ "swing.plaf.nimbus.NimbusLookAndFeel");
+			            		+ "javax.swing.plaf.metal.MetalLookAndFeel");
 			        } else {
 			            UIManager.setLookAndFeel(UIManager
 			            		.getSystemLookAndFeelClassName());
 			        }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
 					// Crear la vista principal y mostrarla
 					EditorTXT frame = new EditorTXT();
 					frame.setVisible(true);
