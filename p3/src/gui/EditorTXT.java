@@ -1,43 +1,32 @@
 package gui;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import java.awt.Panel;
-import java.awt.Label;
-import java.awt.GridLayout;
-import javax.swing.JEditorPane;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.DropMode;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.SystemColor;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JComboBox;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JSlider;
-import javax.swing.JMenuItem;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -204,21 +193,21 @@ public class EditorTXT extends JFrame {
 		separator_5.setOrientation(SwingConstants.VERTICAL);
 		toolbar.add(separator_5);
 		
-		JButton btnBold = new JButton("");
+		JToggleButton btnBold = new JToggleButton("");
 		btnBold.setOpaque(false);
 		btnBold.setBorderPainted(false);
 		btnBold.setToolTipText("Negrita");
 		btnBold.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/b16.png")));
 		toolbar.add(btnBold);
 		
-		JButton btnCursive = new JButton("");
+		JToggleButton btnCursive = new JToggleButton("");
 		btnCursive.setOpaque(false);
 		btnCursive.setBorderPainted(false);
 		btnCursive.setToolTipText("Cursiva");
 		btnCursive.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/i16.png")));
 		toolbar.add(btnCursive);
 		
-		JButton btnUnderline = new JButton("");
+		JToggleButton btnUnderline = new JToggleButton("");
 		btnUnderline.setOpaque(false);
 		btnUnderline.setBorderPainted(false);
 		btnUnderline.setToolTipText("Subrayado");
