@@ -484,7 +484,7 @@ public class EditorTXT extends JFrame {
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mnAyuda.add(mntmAcercaDe);
-		
+		//sainz pelopo
 	}
 
 }
