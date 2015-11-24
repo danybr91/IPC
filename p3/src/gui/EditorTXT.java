@@ -52,7 +52,7 @@ public class EditorTXT extends JFrame {
 		setBounds(100, 100, 720, 515);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		//Redimensionar las imágenes de los iconos si es necesarioç
+		//Redimensionar las imï¿½genes de los iconos si es necesarioï¿½
 //		Image img = icon.getImage() ;  
 //		Image newimg = img.getScaledInstance( NEW_WIDTH, NEW_HEIGHT,  java.awt.Image.SCALE_SMOOTH ) ;  
 //		icon = new ImageIcon( newimg );
