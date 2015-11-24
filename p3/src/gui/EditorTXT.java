@@ -438,6 +438,8 @@ public class EditorTXT extends JFrame {
 		mnFormato.add(separator_14);
 		*/
 		
+		//jajue
+		
 		JMenuItem mntmNegrita = new JMenuItem("Negrita");
 		mntmNegrita.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mntmNegrita.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/b16.png")));
