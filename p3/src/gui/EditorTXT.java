@@ -486,6 +486,7 @@ public class EditorTXT extends JFrame {
 		mnAyuda.add(mntmAcercaDe);
 		
 		//dani pig
+		//mas pig que nunca
 	}
 
 }
