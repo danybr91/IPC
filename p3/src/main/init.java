@@ -11,7 +11,7 @@ public class init {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// Hilo para la interfaz gráfica. (Se crea por defecto)
+		// Hilo para la interfaz grï¿½fica. (Se crea por defecto)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -19,15 +19,15 @@ public class init {
 					 *  Set the Look And Feel
 					 *  
 					 *  Cambia el Look And Feel de Swing para que utilice el 
-					 *  del sistema si es posible. Si por algún error no puede
+					 *  del sistema si es posible. Si por algï¿½n error no puede
 					 *  cargar el estilo del sistema, carga el estilo por
 					 *  defecto.
 					 */
 					if (UIManager.getSystemLookAndFeelClassName()
 							.equals(UIManager
 									.getCrossPlatformLookAndFeelClassName())) {
-			            UIManager.setLookAndFeel("javax."
-			            		+ "javax.swing.plaf.metal.MetalLookAndFeel");
+			            UIManager.setLookAndFeel(
+			            		 "javax.swing.plaf.metal.MetalLookAndFeel");
 			        } else {
 			            UIManager.setLookAndFeel(UIManager
 			            		.getSystemLookAndFeelClassName());
