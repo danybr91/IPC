@@ -495,6 +495,25 @@ public class EditorTXT extends JFrame {
 				editorPane.setFont(cursiva);
 			}
 		});
+		
+		/**
+		 * Damos funcionalidad a la negrita
+		 * 
+		 * */
+
+		//Cuando clicas en la foto de negrita...
+
+		btnBold.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+
+				Font actual=editorPane.getFont(); //ponerlo al final
+				Font negrita=new Font("negrita", Font.BOLD, actual.getSize());
+
+				editorPane.setFont(negrita);
+			}
+		});
 
 
 		//cuando clicas en formato, cursiva...
