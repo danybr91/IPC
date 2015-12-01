@@ -33,8 +33,8 @@ import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
-	boolean BoldSelected=false;
-
+	private boolean BoldSelected=false;
+	private boolean italicSelected=false;
 
 	/**
 	 * Create the frame.
@@ -489,10 +489,17 @@ public class EditorTXT extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
-
-				editorPane.setFont(cursiva);
+				if(!italicSelected){
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva", actual.getStyle()+Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva",actual.getStyle()-Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=false;
+				}
 			}
 		});
 		
@@ -501,10 +508,17 @@ public class EditorTXT extends JFrame {
 		mntmCursiva.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
-
-				editorPane.setFont(cursiva);
+				if(!italicSelected){
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva",0, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=false;
+				}
 			}
 		});
 		
