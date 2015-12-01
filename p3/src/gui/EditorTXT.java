@@ -496,7 +496,17 @@ public class EditorTXT extends JFrame {
 			}
 		});
 		
+		//Cusando clickamos en Formato, Cursiva...
 		
+		mntmCursiva.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Font actual=editorPane.getFont(); //ponerlo al final
+				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
+
+				editorPane.setFont(cursiva);
+			}
+		});
 		
 		
 		
