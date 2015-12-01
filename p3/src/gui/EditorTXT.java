@@ -33,8 +33,9 @@ import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
-	private boolean BoldSelected=false;
+	private boolean boldSelected=false;
 	private boolean italicSelected=false;
+	private boolean underlineSelected=false;
 
 	/**
 	 * Create the frame.
@@ -535,21 +536,41 @@ public class EditorTXT extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(!BoldSelected){
+				if(!boldSelected){
 					Font actual=editorPane.getFont(); 
 					Font negrita=new Font("negrita", Font.BOLD+actual.getStyle(), actual.getSize());
 					editorPane.setFont(negrita);
-					BoldSelected=true;
+					boldSelected=true;
 				}else{
 					Font actual=editorPane.getFont(); 
 					Font negrita=new Font("negrita",actual.getStyle()-Font.BOLD, actual.getSize());
 					editorPane.setFont(negrita);
-					BoldSelected=false;
+					boldSelected=false;
 				}
 			}
 			
 		});
+		
+		/** En desarrollo
+		btnUderline.addMouseListener(new MouseAdapter() {
 
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(!underlineSelected){
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",Font.PLAIN, actual.getSize());
+					editorPane.setFont(negrita);
+					underlineSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",actual.getStyle()-Font.PLAIN, actual.getSize());
+					editorPane.setFont(negrita);
+					underlineSelected=false;
+				}
+			}
+			
+		});
+		**/
 	}
 }
 
