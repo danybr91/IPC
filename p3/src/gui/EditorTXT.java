@@ -492,10 +492,13 @@ public class EditorTXT extends JFrame {
 				Font actual=editorPane.getFont(); //ponerlo al final
 				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
 
-				btnCursive.setFont(cursiva);
 				editorPane.setFont(cursiva);
 			}
 		});
+		
+		
+		
+		
 		
 		/**
 		 * Damos funcionalidad a la negrita
@@ -517,20 +520,10 @@ public class EditorTXT extends JFrame {
 		});
 
 
-		//cuando clicas en formato, cursiva...
 
-		mntmCursiva.addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
-
-				btnCursive.setFont(cursiva);
-				editorPane.setFont(cursiva);
-			}
-		});
+		
+		
 
 	}
 }
