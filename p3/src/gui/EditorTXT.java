@@ -478,23 +478,41 @@ public class EditorTXT extends JFrame {
 		mnAyuda.add(mntmAcercaDe);
 
 		/**
-		 * Damos funcionalidad a la negrita
+		 * Damos funcionalidad a la cursiva
 		 * 
 		 * */
+
+		//Cuando clicas en la foto de cursiva...
+
 		btnCursive.addMouseListener(new MouseAdapter() {
 
-			/*
-			 * Cuando clicas en la foto de cursiva...
-			 * 
-			 * */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
 				Font actual=editorPane.getFont(); //ponerlo al final
+				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
 
-
+				btnCursive.setFont(cursiva);
+				editorPane.setFont(cursiva);
 			}
 		});
+
+
+		//cuando clicas en formato, cursiva...
+
+		mntmCursiva.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+
+				Font actual=editorPane.getFont(); //ponerlo al final
+				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
+
+				btnCursive.setFont(cursiva);
+				editorPane.setFont(cursiva);
+			}
+		});
+
 	}
 }
 
