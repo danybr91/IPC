@@ -33,7 +33,7 @@ import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
-
+	boolean BoldSelected=false;
 
 
 	/**
@@ -521,19 +521,20 @@ public class EditorTXT extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font negrita=new Font("negrita", Font.BOLD, actual.getSize());
-
-				editorPane.setFont(negrita);
+				if(!BoldSelected){
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita", Font.BOLD+actual.getStyle(), actual.getSize());
+					editorPane.setFont(negrita);
+					BoldSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",actual.getStyle()-Font.BOLD, actual.getSize());
+					editorPane.setFont(negrita);
+					BoldSelected=false;
+				}
 			}
+			
 		});
-
-
-
-
-		
-		
 
 	}
 }
