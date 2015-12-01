@@ -496,6 +496,10 @@ public class EditorTXT extends JFrame {
 			}
 		});
 		
+		
+		
+		
+		
 		/**
 		 * Damos funcionalidad a la negrita
 		 * 
@@ -516,7 +520,7 @@ public class EditorTXT extends JFrame {
 		});
 
 
-		//cuando clicas en formato, cursiva...
+
 
 		
 		
