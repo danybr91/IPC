@@ -622,6 +622,7 @@ public class EditorTXT extends JFrame {
 						    StyleConstants.setUnderline(style, false);
 						   
 						}
+						//aplicamos el estilo a la seleccion
 						 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 					}
 				});
