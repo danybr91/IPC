@@ -47,8 +47,9 @@ import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
-
-
+	private boolean boldSelected=false;
+	private boolean italicSelected=false;
+	private boolean underlineSelected=false;
 
 	/**
 	 * Create the frame
@@ -552,6 +553,7 @@ public class EditorTXT extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
+<<<<<<< HEAD
 				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
 				StyledDocument doc = editorPane.getStyledDocument();
 				Element element = doc.getCharacterElement(indices[0]);
@@ -567,8 +569,45 @@ public class EditorTXT extends JFrame {
 				}
 				 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 				
+=======
+				if(!italicSelected){
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva", actual.getStyle()+Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva",actual.getStyle()-Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=false;
+				}
+>>>>>>> branch 'p3' of https://github.com/danybr91/IPC.git
 			}
 		});
+<<<<<<< HEAD
+=======
+		
+		//Cusando clickamos en Formato, Cursiva...
+		
+		mntmCursiva.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(!italicSelected){
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font cursiva=new Font("cursiva",0, actual.getSize());
+					editorPane.setFont(cursiva);
+					italicSelected=false;
+				}
+			}
+		});
+		
+		
+>>>>>>> branch 'p3' of https://github.com/danybr91/IPC.git
 		
 		/**
 		 * Damos funcionalidad a la negrita
@@ -581,6 +620,7 @@ public class EditorTXT extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+<<<<<<< HEAD
 				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
 				StyledDocument doc = editorPane.getStyledDocument();
 				//cogemos un elemento del texto seleccionado para saber si esta en cursiva
@@ -600,8 +640,23 @@ public class EditorTXT extends JFrame {
 				    
 				    
 				    
+=======
+				if(!boldSelected){
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita", Font.BOLD+actual.getStyle(), actual.getSize());
+					editorPane.setFont(negrita);
+					boldSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",actual.getStyle()-Font.BOLD, actual.getSize());
+					editorPane.setFont(negrita);
+					boldSelected=false;
+				}
+>>>>>>> branch 'p3' of https://github.com/danybr91/IPC.git
 			}
+			
 		});
+<<<<<<< HEAD
 
 		//Cuando clicas en la foto de negrita...
 
@@ -627,9 +682,29 @@ public class EditorTXT extends JFrame {
 					}
 				});
 
+=======
+>>>>>>> branch 'p3' of https://github.com/danybr91/IPC.git
 		
-		
+		/** En desarrollo
+		btnUderline.addMouseListener(new MouseAdapter() {
 
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(!underlineSelected){
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",Font.PLAIN, actual.getSize());
+					editorPane.setFont(negrita);
+					underlineSelected=true;
+				}else{
+					Font actual=editorPane.getFont(); 
+					Font negrita=new Font("negrita",actual.getStyle()-Font.PLAIN, actual.getSize());
+					editorPane.setFont(negrita);
+					underlineSelected=false;
+				}
+			}
+			
+		});
+		**/
 	}
 
 /**
