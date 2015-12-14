@@ -9,6 +9,8 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -44,6 +46,7 @@ import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledEditorKit;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -284,6 +287,7 @@ public class EditorTXT extends JFrame {
 	    editorPane.addStyle("Italic", null);
 	    editorPane.addStyle("Bold", null);
 	    editorPane.addStyle("Underline",null);
+	    editorPane.addStyle("Font",null);
 	    
 
 		Panel estado = new Panel();
@@ -627,7 +631,33 @@ public class EditorTXT extends JFrame {
 						 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 					}
 				});
-
+				//Aumentar el tamanio de la fuente
+				btnMoreSize.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+						StyledDocument doc = editorPane.getStyledDocument();						
+						Style style = editorPane.getStyle("Font");
+						Element element = doc.getCharacterElement(indices[0]);
+						AttributeSet as = element.getAttributes();
+						StyleConstants.setFontSize(style, StyleConstants.getFontSize(as)+2);
+						doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);						
+					}
+					
+				});
+				
+				
+				//Cambiamos el tipo de fuente 
+				 cmbFuente.addItemListener(new ItemListener() {
+				        @Override
+				        public void itemStateChanged(ItemEvent e) {
+				            if (e.getStateChange() == ItemEvent.SELECTED) {
+				            	
+				                editorPane.setFont(new Font((String) cmbFuente.getSelectedItem(), Font.ITALIC, 16));
+				            }
+				        }
+					
+				    });
 	}
 
 /**
