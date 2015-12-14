@@ -6,10 +6,16 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -17,19 +23,27 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Element;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -37,7 +51,7 @@ public class EditorTXT extends JFrame {
 
 
 	/**
-	 * Create the frame.
+	 * Create the frame
 	 */
 	public EditorTXT() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -259,9 +273,17 @@ public class EditorTXT extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 		editor.add(scrollPane, BorderLayout.CENTER);
-
-		JEditorPane editorPane = new JEditorPane();
+		
+		/**
+		 * Anhadimos los estilos al crear el textPane
+		 */
+		JTextPane editorPane = new JTextPane();
 		editor.add(editorPane);
+	    editorPane.addStyle("Default", null);
+	    editorPane.addStyle("Italic", null);
+	    editorPane.addStyle("Bold", null);
+	    editorPane.addStyle("Underline",null);
+	    
 
 		Panel estado = new Panel();
 		getContentPane().add(estado, BorderLayout.SOUTH);
@@ -322,6 +344,47 @@ public class EditorTXT extends JFrame {
 		mnAlchivo.add(mntmNuevo);
 
 		JMenuItem mntmAbrir = new JMenuItem("Abrir...");
+		
+		mntmAbrir.addActionListener(new ActionListener() {
+			@Override
+		    public void actionPerformed(ActionEvent ae) {
+				 String aux="";   
+				  String texto="";
+				  try
+				  {
+				   /**llamamos el metodo que permite cargar la ventana*/
+				   JFileChooser file=new JFileChooser();
+				   file.showOpenDialog(null);
+				   
+				   /**abrimos el archivo seleccionado*/
+				   File abre=file.getSelectedFile();
+				 
+				   /**recorremos el archivo, lo leemos para plasmarlo
+				   *en el area de texto*/
+				   if(abre!=null)
+				   {     
+				      FileReader archivos=new FileReader(abre);
+				      BufferedReader lee=new BufferedReader(archivos);
+				      while((aux=lee.readLine())!=null)
+				      {
+				         texto+= aux+ "\n";
+				      }
+				         lee.close();
+				         editorPane.setText(texto);
+				         
+				    }    
+				   }
+				   catch(IOException ex)
+				   {
+				     JOptionPane.showMessageDialog(null,ex+"" +
+				           "\nNo se ha encontrado el archivo",
+				                 "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
+				    }
+		    }
+		
+		});
+		
+		
 		mntmAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmAbrir.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/openfile16.png")));
 		mnAlchivo.add(mntmAbrir);
@@ -489,16 +552,23 @@ public class EditorTXT extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font cursiva=new Font("cursiva", Font.ITALIC, actual.getSize());
-
-				editorPane.setFont(cursiva);
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+				StyledDocument doc = editorPane.getStyledDocument();
+				Element element = doc.getCharacterElement(indices[0]);
+				AttributeSet as = element.getAttributes();    
+				Style style = editorPane.getStyle("Italic");
+				if(!StyleConstants.isItalic(as)){
+				    StyleConstants.setItalic(style, true);
+				}
+				else
+				{
+				    StyleConstants.setItalic(style, false);
+				   
+				}
+				 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				
 			}
 		});
-		
-		
-		
-		
 		
 		/**
 		 * Damos funcionalidad a la negrita
@@ -511,21 +581,74 @@ public class EditorTXT extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-
-				Font actual=editorPane.getFont(); //ponerlo al final
-				Font negrita=new Font("negrita", Font.BOLD, actual.getSize());
-
-				editorPane.setFont(negrita);
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+				StyledDocument doc = editorPane.getStyledDocument();
+				//cogemos un elemento del texto seleccionado para saber si esta en cursiva
+				Element element = doc.getCharacterElement(indices[0]);
+				AttributeSet as = element.getAttributes();				
+				Style style = editorPane.getStyle("Bold");
+				if(!StyleConstants.isBold(as)){
+				    StyleConstants.setBold(style, true);
+				}
+				else
+				{
+				    StyleConstants.setBold(style, false);
+				   
+				}
+				 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				
+				    
+				    
+				    
 			}
 		});
 
+		//Cuando clicas en la foto de negrita...
 
-
+				btnUnderline.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+						StyledDocument doc = editorPane.getStyledDocument();
+						//cogemos un elemento del texto seleccionado para saber si esta en cursiva
+						Element element = doc.getCharacterElement(indices[0]);
+						AttributeSet as = element.getAttributes();				
+						Style style = editorPane.getStyle("Underline");
+						if(!StyleConstants.isUnderline(as)){
+						    StyleConstants.setUnderline(style, true);
+						}
+						else
+						{
+						    StyleConstants.setUnderline(style, false);
+						   
+						}
+						 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+					}
+				});
 
 		
 		
 
 	}
+
+/**
+ * Metodo que devuelve el inicio y el fin de la seleccion  
+ */
+private int[] indicesSeleccion(int start, int end){
+	int resultado[] = new int[2];
+    if (start == end) { // No selection, cursor position.
+        return null;
+    }
+    if (start > end) { // Backwards selection? 
+        resultado[0] = end;
+        resultado[1] = start;
+    }else{
+    	resultado[0] = start;
+    	resultado[1] = end;
+    }
+    return resultado;
 }
+}
+
 
 
