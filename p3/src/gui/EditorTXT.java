@@ -393,8 +393,7 @@ public class EditorTXT extends JFrame {
 		getContentPane().add(editor, BorderLayout.CENTER);
 		editor.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane();
-		editor.add(scrollPane, BorderLayout.CENTER);
+		
 
 		/**
 		 * Anhadimos los estilos al crear el textPane
@@ -407,6 +406,8 @@ public class EditorTXT extends JFrame {
 		editorPane.addStyle("Underline", null);
 		editorPane.addStyle("FontSize", null);
 		editorPane.addStyle("FontFamily", null);
+		JScrollPane scrollPane = new JScrollPane(editorPane);
+		editor.add(scrollPane, BorderLayout.CENTER);
 
 		// Contenedor sur - Barra de estado
 
