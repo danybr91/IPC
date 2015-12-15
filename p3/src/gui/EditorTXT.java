@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -12,22 +15,18 @@ import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -37,6 +36,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextPane;
@@ -44,18 +44,13 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Font;
-import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -68,7 +63,7 @@ public class EditorTXT extends JFrame {
 		// Ventana principal
 		setMinimumSize(new Dimension(640, 110));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 515);
+		setBounds(100, 100, 800, 600);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Redimensionar las imágenes de los iconos si es necesario
@@ -290,6 +285,11 @@ public class EditorTXT extends JFrame {
 		btnMoreSize.setToolTipText("Aumentar tama\u00F1o de fuente");
 		btnMoreSize.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/bigA16.png")));
 
+		JPopupMenu popupTextColor = new JPopupMenu();
+
+		JColorChooser paleta = new JColorChooser(Color.black);
+		popupTextColor.add(paleta);
+
 		JButton btnTextColor = new JButton("");
 		btnTextColor.setPreferredSize(new Dimension(26, 26));
 		btnTextColor.setMinimumSize(new Dimension(16, 16));
@@ -299,6 +299,11 @@ public class EditorTXT extends JFrame {
 		toolbar.add(btnTextColor);
 		btnTextColor.setToolTipText("Color de texto");
 		btnTextColor.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/textcolor16.png")));
+
+		// El menu aparecera en la posicion del invocador, que es el elemento
+		// contenedor
+		// (aqui se utiliza para determinar la posicion)
+		popupTextColor.setInvoker(herramientas);
 
 		JSeparator separator_4 = new JSeparator();
 		// Evita que el separador se extienda en la ventana (tamaño fijo)
@@ -345,41 +350,42 @@ public class EditorTXT extends JFrame {
 
 		// FUNCIONES NO IMPLEMENTADAS EN ESTA VERSIÓN
 
-		/*
-		 * JSeparator separator_5 = new JSeparator(); // Evita que el separador
-		 * se extienda en la ventana (tamaño fijo)
-		 * separator_5.setMaximumSize(new Dimension(10, 15));
-		 * separator_5.setOrientation(SwingConstants.VERTICAL);
-		 * toolbar.add(separator_5);
-		 * 
-		 * JButton btnLeftAlign = new JButton("");
-		 * btnLeftAlign.setOpaque(false); btnLeftAlign.setBorderPainted(false);
-		 * btnLeftAlign.setToolTipText("Alinear a la izquierda");
-		 * btnLeftAlign.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
-		 * toolbar.add(btnLeftAlign);
-		 * 
-		 * JButton btnRightAlign = new JButton("");
-		 * btnRightAlign.setOpaque(false);
-		 * btnRightAlign.setBorderPainted(false); btnRightAlign.setToolTipText(
-		 * "Alinear al centro"); btnRightAlign.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
-		 * toolbar.add(btnRightAlign);
-		 * 
-		 * JButton btnCenterAlign = new JButton("");
-		 * btnCenterAlign.setOpaque(false);
-		 * btnCenterAlign.setBorderPainted(false);
-		 * btnCenterAlign.setToolTipText("Alinear a la derecha");
-		 * btnCenterAlign.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
-		 * toolbar.add(btnCenterAlign);
-		 * 
-		 * JButton btnJustify = new JButton(""); btnJustify.setOpaque(false);
-		 * btnJustify.setBorderPainted(false); toolbar.add(btnJustify);
-		 * btnJustify.setVerticalAlignment(SwingConstants.BOTTOM);
-		 * btnJustify.setToolTipText("Justificar"); btnJustify.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
-		 */
+		JSeparator separator_5 = new JSeparator(); // Evita que el separador
+		// se extienda en la ventana (tamaño fijo)
+		separator_5.setMinimumSize(new Dimension(3, 15));
+		separator_5.setPreferredSize(new Dimension(3, 15));
+		separator_5.setMaximumSize(new Dimension(3, 15));
+		separator_5.setOrientation(SwingConstants.VERTICAL);
+		toolbar.add(separator_5);
+
+		JButton btnLeftAlign = new JButton("");
+		btnLeftAlign.setOpaque(false);
+		btnLeftAlign.setBorderPainted(false);
+		btnLeftAlign.setToolTipText("Alinear a la izquierda");
+		btnLeftAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
+		toolbar.add(btnLeftAlign);
+
+		JButton btnCenterAlign = new JButton("");
+		btnCenterAlign.setOpaque(false);
+		btnCenterAlign.setBorderPainted(false);
+		btnCenterAlign.setToolTipText("Alinear al centro");
+		btnCenterAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
+		toolbar.add(btnCenterAlign);
+
+		JButton btnRightAlign = new JButton("");
+		btnRightAlign.setOpaque(false);
+		btnRightAlign.setBorderPainted(false);
+		btnRightAlign.setToolTipText("Alinear a la derecha");
+		btnRightAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		toolbar.add(btnRightAlign);
+
+		JButton btnJustify = new JButton("");
+		btnJustify.setOpaque(false);
+		btnJustify.setBorderPainted(false);
+		toolbar.add(btnJustify);
+		btnJustify.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnJustify.setToolTipText("Justificar");
+		btnJustify.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
 
 		// Contenedor central - Editor
 
@@ -402,6 +408,7 @@ public class EditorTXT extends JFrame {
 		editorPane.addStyle("Underline", null);
 		editorPane.addStyle("FontSize", null);
 		editorPane.addStyle("FontFamily", null);
+		editorPane.addStyle("Align", null);
 
 		// Contenedor sur - Barra de estado
 
@@ -454,6 +461,8 @@ public class EditorTXT extends JFrame {
 		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "UTF-8" }));
 		codificacion.add(comboBox);
+
+		// Barra de menús
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -511,49 +520,45 @@ public class EditorTXT extends JFrame {
 		};
 		mntmAbrir.addActionListener(listenerAbrir);
 		btnAbrirArchivo.addActionListener(listenerAbrir);
-		
-		
+
 		ActionListener listenerGuardarComo = new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {			    
+			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser SaveAs = new JFileChooser();
+
 				SaveAs.setDialogTitle("Guardar Como...");
-				 int actionDialog = SaveAs.showOpenDialog(null);
-			      if (actionDialog != JFileChooser.APPROVE_OPTION) {
-			         return;
-			      }
-			      File fileName = new File(SaveAs.getSelectedFile() + ".txt");
-			      BufferedWriter outFile = null;
-			      try {
-			         outFile = new BufferedWriter(new FileWriter(fileName));
+				int actionDialog = SaveAs.showOpenDialog(null);
+				if (actionDialog != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				File fileName = new File(SaveAs.getSelectedFile() + ".txt");
+				BufferedWriter outFile = null;
+				try {
+					outFile = new BufferedWriter(new FileWriter(fileName));
 
-			         editorPane.write(outFile);   
+					editorPane.write(outFile);
+					editorPane.write(outFile);
 
-			      } catch (IOException ex) {
-			         ex.printStackTrace();
-			      } finally {
-			         if (outFile != null) {
-			            try {
-			               outFile.close();
-			            } catch (IOException e) {
-			            	
-			            }
-			         }
-			      }
-			
-		}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				} finally {
+					if (outFile != null) {
+						try {
+							outFile.close();
+						} catch (IOException e) {
+
+						}
+					}
+				}
+			}
 		};
 		btnGuardarArchivo.addActionListener(listenerGuardarComo);
 		mntmGuardarComo.addActionListener(listenerGuardarComo);
-		
-	
 
 		mntmAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mntmAbrir.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/openfile16.png")));
 		mnAlchivo.add(mntmAbrir);
-
-	
 
 		JSeparator separator_7 = new JSeparator();
 		mnAlchivo.add(separator_7);
@@ -621,11 +626,11 @@ public class EditorTXT extends JFrame {
 		mntmSeleccionarTodo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mnEditar.add(mntmSeleccionarTodo);
 		mntmSeleccionarTodo.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				editorPane.selectAll();
-				
+
 			}
 		});
 
@@ -638,32 +643,24 @@ public class EditorTXT extends JFrame {
 		JSeparator separator_13 = new JSeparator();
 		mnFormato.add(separator_13);
 
-		/*
-		 * JMenuItem mntmAlinearALa = new JMenuItem("Alinear a la izquierda");
-		 * mntmAlinearALa.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
-		 * mnFormato.add(mntmAlinearALa);
-		 * 
-		 * JMenuItem mntmAlinearAlCentro = new JMenuItem("Alinear al centro");
-		 * mntmAlinearAlCentro.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
-		 * mnFormato.add(mntmAlinearAlCentro);
-		 * 
-		 * JMenuItem mntmAlinearALa_1 = new JMenuItem("Alinear a la derecha");
-		 * mntmAlinearALa_1.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
-		 * mnFormato.add(mntmAlinearALa_1);
-		 * 
-		 * JMenuItem mntmJustificar = new JMenuItem("Justificar");
-		 * mntmJustificar.setIcon(new
-		 * ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
-		 * mnFormato.add(mntmJustificar);
-		 * 
-		 * JSeparator separator_14 = new JSeparator();
-		 * mnFormato.add(separator_14);
-		 */
+		JMenuItem mntmAlinearALa = new JMenuItem("Alinear a la izquierda");
+		mntmAlinearALa.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
+		mnFormato.add(mntmAlinearALa);
 
-		// jajue
+		JMenuItem mntmAlinearAlCentro = new JMenuItem("Alinear al centro");
+		mntmAlinearAlCentro.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
+		mnFormato.add(mntmAlinearAlCentro);
+
+		JMenuItem mntmAlinearALa_1 = new JMenuItem("Alinear a la derecha");
+		mntmAlinearALa_1.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		mnFormato.add(mntmAlinearALa_1);
+
+		JMenuItem mntmJustificar = new JMenuItem("Justificar");
+		mntmJustificar.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
+		mnFormato.add(mntmJustificar);
+
+		JSeparator separator_14 = new JSeparator();
+		mnFormato.add(separator_14);
 
 		JMenuItem mntmNegrita = new JMenuItem("Negrita");
 		mntmNegrita.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
@@ -770,8 +767,36 @@ public class EditorTXT extends JFrame {
 			}
 
 		};
-		btnBold.addActionListener(listenerNegrita);
-		mntmNegrita.addActionListener(listenerNegrita);
+
+		// Listeners
+
+		// Cambiamos el tipo de fuente
+		ItemListener cambiarFuente = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+					StyledDocument doc = editorPane.getStyledDocument();
+					Style style = editorPane.getStyle("FontFamily");
+					StyleConstants.setFontFamily(style, (String) cmbFuente.getSelectedItem());
+					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				}
+			}
+		};
+
+		ItemListener cambiarTamano = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+					StyledDocument doc = editorPane.getStyledDocument();
+					Style style = editorPane.getStyle("FontSize");
+					StyleConstants.setFontSize(style, Integer.parseInt((String) cmbSize.getSelectedItem()));
+					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				}
+			}
+
+		};
 
 		// Funcionalidad para el subrayado
 		ActionListener listenerSubrayado = new ActionListener() {
@@ -794,8 +819,6 @@ public class EditorTXT extends JFrame {
 				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 			}
 		};
-		btnUnderline.addActionListener(listenerSubrayado);
-		mntmSubrayado.addActionListener(listenerSubrayado);
 
 		// Aumentar el tamanio de la fuente
 		btnMoreSize.addActionListener(new ActionListener() {
@@ -811,7 +834,7 @@ public class EditorTXT extends JFrame {
 			}
 
 		});
-		// Disminiumos el tamanio de la fuente
+		// Disminuimos el tamaño de la fuente
 		btnLessSize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -826,19 +849,42 @@ public class EditorTXT extends JFrame {
 
 		});
 
-		cmbSize.addItemListener(new ItemListener() {
+		btnTextColor.addActionListener(new ActionListener() {
+
 			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
-					StyledDocument doc = editorPane.getStyledDocument();
-					Style style = editorPane.getStyle("FontSize");
-					StyleConstants.setFontSize(style, Integer.parseInt((String) cmbSize.getSelectedItem()));
-					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
-				}
+			public void actionPerformed(ActionEvent e) {
+				popupTextColor.show(popupTextColor.getInvoker(), popupTextColor.getInvoker().getX(),
+						popupTextColor.getInvoker().getY());
 			}
 
 		});
+		// funcionalidad para copiar
+		ActionListener listenerCopiar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.copy();
+
+			}
+
+		};
+		// funcionalidad para cortar
+		ActionListener listenerCortar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.cut();
+
+			}
+
+		};
+		// funcionalidad para copiar
+		ActionListener listenerPegar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.paste();
+
+			}
+
+		};
 
 		// Cambiamos el tipo de fuente
 		cmbFuente.addItemListener(new ItemListener() {
@@ -854,6 +900,57 @@ public class EditorTXT extends JFrame {
 			}
 
 		});
+
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignLeftListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_LEFT);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignCenterListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_CENTER);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignRightListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_RIGHT);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignJustifiedListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_JUSTIFIED);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+
 		// Listener para el boton de impresion
 		ActionListener printListener = new ActionListener() {
 			@Override
@@ -870,9 +967,29 @@ public class EditorTXT extends JFrame {
 
 			}
 		};
+
+		// Asignacion de listeners
 		btnImprimir.addActionListener(printListener);
 		mntmImprimir.addActionListener(printListener);
-
+		cmbFuente.addItemListener(cambiarFuente);
+		cmbSize.addItemListener(cambiarTamano);
+		btnUnderline.addActionListener(listenerSubrayado);
+		mntmSubrayado.addActionListener(listenerSubrayado);
+		btnBold.addActionListener(listenerNegrita);
+		mntmNegrita.addActionListener(listenerNegrita);
+		btnCopiar.addActionListener(listenerCopiar);
+		btnCortar.addActionListener(listenerCortar);
+		btnPegar.addActionListener(listenerPegar);
+		btnLeftAlign.addActionListener(alignLeftListener);
+		btnRightAlign.addActionListener(alignRightListener);
+		btnJustify.addActionListener(alignJustifiedListener);
+		btnCenterAlign.addActionListener(alignCenterListener);
+		
+		mntmAlinearALa.addActionListener(alignLeftListener);
+		mntmAlinearALa_1.addActionListener(alignRightListener);
+		mntmJustificar.addActionListener(alignJustifiedListener);
+		mntmAlinearAlCentro.addActionListener(alignCenterListener);
+		
 	}
 
 	/**
