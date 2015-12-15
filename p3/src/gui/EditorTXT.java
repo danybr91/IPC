@@ -51,6 +51,7 @@ import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -59,6 +60,8 @@ public class EditorTXT extends JFrame {
 	 * Create the frame
 	 */
 	public EditorTXT() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EditorTXT.class.getResource("/res/aaaaaa.png")));
+		setTitle("myEditor++");
 
 		// Ventana principal
 		setMinimumSize(new Dimension(640, 110));
