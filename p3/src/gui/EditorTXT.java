@@ -66,7 +66,7 @@ public class EditorTXT extends JFrame {
 		// Ventana principal
 		setMinimumSize(new Dimension(640, 110));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 780, 515);
+		setBounds(100, 100, 800, 600);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Redimensionar las imágenes de los iconos si es necesario
@@ -289,10 +289,10 @@ public class EditorTXT extends JFrame {
 		btnMoreSize.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/bigA16.png")));
 
 		JPopupMenu popupTextColor = new JPopupMenu();
-		
-		JColorChooser paleta=new JColorChooser(Color.black);
+
+		JColorChooser paleta = new JColorChooser(Color.black);
 		popupTextColor.add(paleta);
-		
+
 		JButton btnTextColor = new JButton("");
 		btnTextColor.setPreferredSize(new Dimension(26, 26));
 		btnTextColor.setMinimumSize(new Dimension(16, 16));
@@ -302,11 +302,12 @@ public class EditorTXT extends JFrame {
 		toolbar.add(btnTextColor);
 		btnTextColor.setToolTipText("Color de texto");
 		btnTextColor.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/textcolor16.png")));
-		
-		// El menu aparecera en la posicion del invocador, que es el elemento contenedor
+
+		// El menu aparecera en la posicion del invocador, que es el elemento
+		// contenedor
 		// (aqui se utiliza para determinar la posicion)
 		popupTextColor.setInvoker(herramientas);
-		
+
 		JSeparator separator_4 = new JSeparator();
 		// Evita que el separador se extienda en la ventana (tamaño fijo)
 		separator_4.setMinimumSize(new Dimension(3, 15));
@@ -367,19 +368,19 @@ public class EditorTXT extends JFrame {
 		btnLeftAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
 		toolbar.add(btnLeftAlign);
 
-		JButton btnRightAlign = new JButton("");
-		btnRightAlign.setOpaque(false);
-		btnRightAlign.setBorderPainted(false);
-		btnRightAlign.setToolTipText("Alinear al centro");
-		btnRightAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
-		toolbar.add(btnRightAlign);
-
 		JButton btnCenterAlign = new JButton("");
 		btnCenterAlign.setOpaque(false);
 		btnCenterAlign.setBorderPainted(false);
-		btnCenterAlign.setToolTipText("Alinear a la derecha");
-		btnCenterAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		btnCenterAlign.setToolTipText("Alinear al centro");
+		btnCenterAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
 		toolbar.add(btnCenterAlign);
+
+		JButton btnRightAlign = new JButton("");
+		btnRightAlign.setOpaque(false);
+		btnRightAlign.setBorderPainted(false);
+		btnRightAlign.setToolTipText("Alinear a la derecha");
+		btnRightAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		toolbar.add(btnRightAlign);
 
 		JButton btnJustify = new JButton("");
 		btnJustify.setOpaque(false);
@@ -409,6 +410,7 @@ public class EditorTXT extends JFrame {
 		editorPane.addStyle("Underline", null);
 		editorPane.addStyle("FontSize", null);
 		editorPane.addStyle("FontFamily", null);
+		editorPane.addStyle("Align", null);
 		JScrollPane scrollPane = new JScrollPane(editorPane);
 		editor.add(scrollPane, BorderLayout.CENTER);
 
@@ -528,6 +530,8 @@ public class EditorTXT extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser SaveAs = new JFileChooser();
+
+				SaveAs.setDialogTitle("Guardar Como...");
 				int actionDialog = SaveAs.showOpenDialog(null);
 				if (actionDialog != JFileChooser.APPROVE_OPTION) {
 					return;
@@ -537,7 +541,8 @@ public class EditorTXT extends JFrame {
 				try {
 					outFile = new BufferedWriter(new FileWriter(fileName));
 
-					editorPane.write(outFile); // *** here: ***
+					editorPane.write(outFile);
+					editorPane.write(outFile);
 
 				} catch (IOException ex) {
 					ex.printStackTrace();
@@ -546,12 +551,10 @@ public class EditorTXT extends JFrame {
 						try {
 							outFile.close();
 						} catch (IOException e) {
-							// one of the few times that I think that it's OK
-							// to leave this blank
+
 						}
 					}
 				}
-
 			}
 		};
 		btnGuardarArchivo.addActionListener(listenerGuardarComo);
@@ -799,25 +802,6 @@ public class EditorTXT extends JFrame {
 
 		};
 
-		// Listener para el boton de impresion
-		ActionListener printListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					boolean done = editorPane.print();
-					if (done) {
-						JOptionPane.showMessageDialog(null, "Impresion correcta");
-					} else {
-						JOptionPane.showMessageDialog(null, "Impresion no completada");
-					}
-				} catch (Exception pex) {
-					JOptionPane.showMessageDialog(null, "Erorr al imprimir");
-					pex.printStackTrace();
-				}
-
-			}
-		};
-
 		// Funcionalidad para el subrayado
 		ActionListener listenerSubrayado = new ActionListener() {
 			@Override
@@ -870,15 +854,124 @@ public class EditorTXT extends JFrame {
 		});
 
 		btnTextColor.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				popupTextColor.show(popupTextColor.getInvoker(),popupTextColor.getInvoker().getX(),
+				popupTextColor.show(popupTextColor.getInvoker(), popupTextColor.getInvoker().getX(),
 						popupTextColor.getInvoker().getY());
 			}
 
 		});
-		
+		// funcionalidad para copiar
+		ActionListener listenerCopiar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.copy();
+
+			}
+
+		};
+		// funcionalidad para cortar
+		ActionListener listenerCortar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.cut();
+
+			}
+
+		};
+		// funcionalidad para copiar
+		ActionListener listenerPegar = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.paste();
+
+			}
+
+		};
+
+		// Cambiamos el tipo de fuente
+		cmbFuente.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+					StyledDocument doc = editorPane.getStyledDocument();
+					Style style = editorPane.getStyle("FontFamily");
+					StyleConstants.setFontFamily(style, (String) cmbFuente.getSelectedItem());
+					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				}
+			}
+
+		});
+
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignLeftListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_LEFT);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignCenterListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_CENTER);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignRightListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_RIGHT);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+		// Listener para el boton de alineacion izquierda
+		ActionListener alignJustifiedListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("Align");
+				StyleConstants.setAlignment(style, StyleConstants.ALIGN_JUSTIFIED);
+				doc.setParagraphAttributes(indices[0], indices[1] - indices[0], style, false);
+
+			}
+		};
+
+		// Listener para el boton de impresion
+		ActionListener printListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					boolean done = editorPane.print();
+					if (done) {
+						JOptionPane.showMessageDialog(null, "Impresion correcta");
+					}
+				} catch (Exception pex) {
+					JOptionPane.showMessageDialog(null, "Erorr al imprimir");
+					pex.printStackTrace();
+				}
+
+			}
+		};
+
 		// Asignacion de listeners
 		btnImprimir.addActionListener(printListener);
 		mntmImprimir.addActionListener(printListener);
@@ -888,6 +981,19 @@ public class EditorTXT extends JFrame {
 		mntmSubrayado.addActionListener(listenerSubrayado);
 		btnBold.addActionListener(listenerNegrita);
 		mntmNegrita.addActionListener(listenerNegrita);
+		btnCopiar.addActionListener(listenerCopiar);
+		btnCortar.addActionListener(listenerCortar);
+		btnPegar.addActionListener(listenerPegar);
+		btnLeftAlign.addActionListener(alignLeftListener);
+		btnRightAlign.addActionListener(alignRightListener);
+		btnJustify.addActionListener(alignJustifiedListener);
+		btnCenterAlign.addActionListener(alignCenterListener);
+		
+		mntmAlinearALa.addActionListener(alignLeftListener);
+		mntmAlinearALa_1.addActionListener(alignRightListener);
+		mntmJustificar.addActionListener(alignJustifiedListener);
+		mntmAlinearAlCentro.addActionListener(alignCenterListener);
+		
 	}
 
 	/**
