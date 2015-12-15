@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -13,10 +14,15 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -40,6 +46,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -56,28 +64,29 @@ public class EditorTXT extends JFrame {
 	 * Create the frame
 	 */
 	public EditorTXT() {
-		
-		// Ventana principal	
+
+		// Ventana principal
 		setMinimumSize(new Dimension(640, 110));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 720, 515);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		//Redimensionar las imágenes de los iconos si es necesario
-		//		Image img = icon.getImage() ;  
-		//		Image newimg = img.getScaledInstance( NEW_WIDTH, NEW_HEIGHT,  java.awt.Image.SCALE_SMOOTH ) ;  
-		//		icon = new ImageIcon( newimg );
+		// Redimensionar las imágenes de los iconos si es necesario
+		// Image img = icon.getImage() ;
+		// Image newimg = img.getScaledInstance( NEW_WIDTH, NEW_HEIGHT,
+		// java.awt.Image.SCALE_SMOOTH ) ;
+		// icon = new ImageIcon( newimg );
 
 		// Contenedor norte - Panel de herramientas
 		JPanel herramientas = new JPanel();
 		herramientas.setMinimumSize(new Dimension(640, 32));
 		herramientas.setBorder(new EmptyBorder(0, 0, 0, 0));
 		getContentPane().add(herramientas, BorderLayout.NORTH);
-		GridLayout gl_herramientas = new GridLayout(1,0);
+		GridLayout gl_herramientas = new GridLayout(1, 0);
 		herramientas.setLayout(gl_herramientas);
 
 		// Barra de herramientas
-		
+
 		JToolBar toolbar = new JToolBar();
 		toolbar.setMinimumSize(new Dimension(640, 32));
 		toolbar.setFloatable(false);
@@ -328,53 +337,52 @@ public class EditorTXT extends JFrame {
 		btnUnderline.setToolTipText("Subrayado");
 		btnUnderline.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/u16.png")));
 		toolbar.add(btnUnderline);
-		
+
 		JSeparator spacer_3 = new JSeparator();
 		spacer_3.setMinimumSize(new Dimension(0, 0));
 		spacer_3.setMaximumSize(new Dimension(32767, 0));
 		toolbar.add(spacer_3);
 
 		// FUNCIONES NO IMPLEMENTADAS EN ESTA VERSIÓN
-		
+
 		/*
-		JSeparator separator_5 = new JSeparator();
-		// Evita que el separador se extienda en la ventana (tamaño fijo)
-		separator_5.setMaximumSize(new Dimension(10, 15));
-		separator_5.setOrientation(SwingConstants.VERTICAL);
-		toolbar.add(separator_5);
-
-		JButton btnLeftAlign = new JButton("");
-		btnLeftAlign.setOpaque(false);
-		btnLeftAlign.setBorderPainted(false);
-		btnLeftAlign.setToolTipText("Alinear a la izquierda");
-		btnLeftAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
-		toolbar.add(btnLeftAlign);
-
-		JButton btnRightAlign = new JButton("");
-		btnRightAlign.setOpaque(false);
-		btnRightAlign.setBorderPainted(false);
-		btnRightAlign.setToolTipText("Alinear al centro");
-		btnRightAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
-		toolbar.add(btnRightAlign);
-
-		JButton btnCenterAlign = new JButton("");
-		btnCenterAlign.setOpaque(false);
-		btnCenterAlign.setBorderPainted(false);
-		btnCenterAlign.setToolTipText("Alinear a la derecha");
-		btnCenterAlign.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
-		toolbar.add(btnCenterAlign);
-
-		JButton btnJustify = new JButton("");
-		btnJustify.setOpaque(false);
-		btnJustify.setBorderPainted(false);
-		toolbar.add(btnJustify);
-		btnJustify.setVerticalAlignment(SwingConstants.BOTTOM);
-		btnJustify.setToolTipText("Justificar");
-		btnJustify.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
+		 * JSeparator separator_5 = new JSeparator(); // Evita que el separador
+		 * se extienda en la ventana (tamaño fijo)
+		 * separator_5.setMaximumSize(new Dimension(10, 15));
+		 * separator_5.setOrientation(SwingConstants.VERTICAL);
+		 * toolbar.add(separator_5);
+		 * 
+		 * JButton btnLeftAlign = new JButton("");
+		 * btnLeftAlign.setOpaque(false); btnLeftAlign.setBorderPainted(false);
+		 * btnLeftAlign.setToolTipText("Alinear a la izquierda");
+		 * btnLeftAlign.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
+		 * toolbar.add(btnLeftAlign);
+		 * 
+		 * JButton btnRightAlign = new JButton("");
+		 * btnRightAlign.setOpaque(false);
+		 * btnRightAlign.setBorderPainted(false); btnRightAlign.setToolTipText(
+		 * "Alinear al centro"); btnRightAlign.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
+		 * toolbar.add(btnRightAlign);
+		 * 
+		 * JButton btnCenterAlign = new JButton("");
+		 * btnCenterAlign.setOpaque(false);
+		 * btnCenterAlign.setBorderPainted(false);
+		 * btnCenterAlign.setToolTipText("Alinear a la derecha");
+		 * btnCenterAlign.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		 * toolbar.add(btnCenterAlign);
+		 * 
+		 * JButton btnJustify = new JButton(""); btnJustify.setOpaque(false);
+		 * btnJustify.setBorderPainted(false); toolbar.add(btnJustify);
+		 * btnJustify.setVerticalAlignment(SwingConstants.BOTTOM);
+		 * btnJustify.setToolTipText("Justificar"); btnJustify.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
 		 */
 
 		// Contenedor central - Editor
-		
+
 		JPanel editor = new JPanel();
 		editor.setBorder(new MatteBorder(1, 0, 1, 0, (Color) SystemColor.controlShadow));
 		getContentPane().add(editor, BorderLayout.CENTER);
@@ -382,20 +390,21 @@ public class EditorTXT extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 		editor.add(scrollPane, BorderLayout.CENTER);
-		
+
 		/**
 		 * Anhadimos los estilos al crear el textPane
 		 */
 		JTextPane editorPane = new JTextPane();
 		editor.add(editorPane);
-	    editorPane.addStyle("Default", null);
-	    editorPane.addStyle("Italic", null);
-	    editorPane.addStyle("Bold", null);
-	    editorPane.addStyle("Underline",null);
-	    editorPane.addStyle("Font",null);
-	    
-	 // Contenedor sur - Barra de estado
-	    
+		editorPane.addStyle("Default", null);
+		editorPane.addStyle("Italic", null);
+		editorPane.addStyle("Bold", null);
+		editorPane.addStyle("Underline", null);
+		editorPane.addStyle("FontSize", null);
+		editorPane.addStyle("FontFamily", null);
+
+		// Contenedor sur - Barra de estado
+
 		Panel estado = new Panel();
 		getContentPane().add(estado, BorderLayout.SOUTH);
 		estado.setLayout(new GridLayout(0, 3, 0, 0));
@@ -440,10 +449,10 @@ public class EditorTXT extends JFrame {
 		fl_codificacion.setVgap(3);
 		fl_codificacion.setAlignment(FlowLayout.RIGHT);
 		estado.add(codificacion);
-		
+
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"UTF-8"}));
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "UTF-8" }));
 		codificacion.add(comboBox);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -456,53 +465,6 @@ public class EditorTXT extends JFrame {
 		mntmNuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mntmNuevo.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/newfile16.png")));
 		mnAlchivo.add(mntmNuevo);
-
-		JMenuItem mntmAbrir = new JMenuItem("Abrir...");
-		
-		mntmAbrir.addActionListener(new ActionListener() {
-			@Override
-		    public void actionPerformed(ActionEvent ae) {
-				 String aux="";   
-				  String texto="";
-				  try
-				  {
-				   /**llamamos el metodo que permite cargar la ventana*/
-				   JFileChooser file=new JFileChooser();
-				   file.showOpenDialog(null);
-				   
-				   /**abrimos el archivo seleccionado*/
-				   File abre=file.getSelectedFile();
-				 
-				   /**recorremos el archivo, lo leemos para plasmarlo
-				   *en el area de texto*/
-				   if(abre!=null)
-				   {     
-				      FileReader archivos=new FileReader(abre);
-				      BufferedReader lee=new BufferedReader(archivos);
-				      while((aux=lee.readLine())!=null)
-				      {
-				         texto+= aux+ "\n";
-				      }
-				         lee.close();
-				         editorPane.setText(texto);
-				         
-				    }    
-				   }
-				   catch(IOException ex)
-				   {
-				     JOptionPane.showMessageDialog(null,ex+"" +
-				           "\nNo se ha encontrado el archivo",
-				                 "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
-				    }
-		    }
-		
-		});
-		
-		
-		mntmAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-		mntmAbrir.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/openfile16.png")));
-		mnAlchivo.add(mntmAbrir);
-
 		JMenuItem mntmGuardar = new JMenuItem("Guardar");
 		mntmGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmGuardar.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/save16.png")));
@@ -510,6 +472,88 @@ public class EditorTXT extends JFrame {
 
 		JMenuItem mntmGuardarComo = new JMenuItem("Guardar como...");
 		mnAlchivo.add(mntmGuardarComo);
+
+		JMenuItem mntmAbrir = new JMenuItem("Abrir...");
+
+		ActionListener listenerAbrir = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				String aux = "";
+				String texto = "";
+				try {
+					/** llamamos el metodo que permite cargar la ventana */
+					JFileChooser file = new JFileChooser();
+					file.showOpenDialog(null);
+
+					/** abrimos el archivo seleccionado */
+					File abre = file.getSelectedFile();
+
+					/**
+					 * recorremos el archivo, lo leemos para plasmarlo en el
+					 * area de texto
+					 */
+					if (abre != null) {
+						FileReader archivos = new FileReader(abre);
+						BufferedReader lee = new BufferedReader(archivos);
+						while ((aux = lee.readLine()) != null) {
+							texto += aux + "\n";
+						}
+						lee.close();
+						editorPane.setText(texto);
+
+					}
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null, ex + "" + "\nNo se ha encontrado el archivo", "ADVERTENCIA!!!",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+
+		};
+		mntmAbrir.addActionListener(listenerAbrir);
+		btnAbrirArchivo.addActionListener(listenerAbrir);
+		
+		
+		ActionListener listenerGuardarComo = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			    
+				final JFileChooser SaveAs = new JFileChooser();
+				 int actionDialog = SaveAs.showOpenDialog(null);
+			      if (actionDialog != JFileChooser.APPROVE_OPTION) {
+			         return;
+			      }
+			      File fileName = new File(SaveAs.getSelectedFile() + ".txt");
+			      BufferedWriter outFile = null;
+			      try {
+			         outFile = new BufferedWriter(new FileWriter(fileName));
+
+			         editorPane.write(outFile);   // *** here: ***
+
+			      } catch (IOException ex) {
+			         ex.printStackTrace();
+			      } finally {
+			         if (outFile != null) {
+			            try {
+			               outFile.close();
+			            } catch (IOException e) {
+			               // one of the few times that I think that it's OK
+			               // to leave this blank
+			            }
+			         }
+			      }
+			
+		}
+		};
+		btnGuardarArchivo.addActionListener(listenerGuardarComo);
+		mntmGuardarComo.addActionListener(listenerGuardarComo);
+		
+	
+
+		mntmAbrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		mntmAbrir.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/openfile16.png")));
+		mnAlchivo.add(mntmAbrir);
+
+	
 
 		JSeparator separator_7 = new JSeparator();
 		mnAlchivo.add(separator_7);
@@ -574,8 +618,16 @@ public class EditorTXT extends JFrame {
 		mnEditar.add(separator_11);
 
 		JMenuItem mntmSeleccionarTodo = new JMenuItem("Seleccionar todo");
-		mntmSeleccionarTodo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
+		mntmSeleccionarTodo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mnEditar.add(mntmSeleccionarTodo);
+		mntmSeleccionarTodo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editorPane.selectAll();
+				
+			}
+		});
 
 		JMenu mnFormato = new JMenu("Formato");
 		menuBar.add(mnFormato);
@@ -587,27 +639,31 @@ public class EditorTXT extends JFrame {
 		mnFormato.add(separator_13);
 
 		/*
-		JMenuItem mntmAlinearALa = new JMenuItem("Alinear a la izquierda");
-		mntmAlinearALa.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
-		mnFormato.add(mntmAlinearALa);
-
-		JMenuItem mntmAlinearAlCentro = new JMenuItem("Alinear al centro");
-		mntmAlinearAlCentro.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
-		mnFormato.add(mntmAlinearAlCentro);
-
-		JMenuItem mntmAlinearALa_1 = new JMenuItem("Alinear a la derecha");
-		mntmAlinearALa_1.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
-		mnFormato.add(mntmAlinearALa_1);
-
-		JMenuItem mntmJustificar = new JMenuItem("Justificar");
-		mntmJustificar.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
-		mnFormato.add(mntmJustificar);
-
-		JSeparator separator_14 = new JSeparator();
-		mnFormato.add(separator_14);
+		 * JMenuItem mntmAlinearALa = new JMenuItem("Alinear a la izquierda");
+		 * mntmAlinearALa.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/left16.png")));
+		 * mnFormato.add(mntmAlinearALa);
+		 * 
+		 * JMenuItem mntmAlinearAlCentro = new JMenuItem("Alinear al centro");
+		 * mntmAlinearAlCentro.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/center16.png")));
+		 * mnFormato.add(mntmAlinearAlCentro);
+		 * 
+		 * JMenuItem mntmAlinearALa_1 = new JMenuItem("Alinear a la derecha");
+		 * mntmAlinearALa_1.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/right16.png")));
+		 * mnFormato.add(mntmAlinearALa_1);
+		 * 
+		 * JMenuItem mntmJustificar = new JMenuItem("Justificar");
+		 * mntmJustificar.setIcon(new
+		 * ImageIcon(EditorTXT.class.getResource("/res/just16.png")));
+		 * mnFormato.add(mntmJustificar);
+		 * 
+		 * JSeparator separator_14 = new JSeparator();
+		 * mnFormato.add(separator_14);
 		 */
 
-		//jajue
+		// jajue
 
 		JMenuItem mntmNegrita = new JMenuItem("Negrita");
 		mntmNegrita.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
@@ -658,136 +714,185 @@ public class EditorTXT extends JFrame {
 		/**
 		 * Damos funcionalidad a la cursiva
 		 * 
-		 * */
+		 */
 
-		//Cuando clicas en la foto de cursiva...
+		// Cuando clicas en la foto de cursiva...
 
-		btnCursive.addMouseListener(new MouseAdapter() {
+		ActionListener listenerCursiva = new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {
 
-				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
 				StyledDocument doc = editorPane.getStyledDocument();
 				Element element = doc.getCharacterElement(indices[0]);
-				AttributeSet as = element.getAttributes();    
+				AttributeSet as = element.getAttributes();
 				Style style = editorPane.getStyle("Italic");
-				if(!StyleConstants.isItalic(as)){
-				    StyleConstants.setItalic(style, true);
+				if (!StyleConstants.isItalic(as)) {
+					StyleConstants.setItalic(style, true);
+				} else {
+					StyleConstants.setItalic(style, false);
+
 				}
-				else
-				{
-				    StyleConstants.setItalic(style, false);
-				   
-				}
-				 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
-				
+				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 
 			}
-		});
+		};
+		btnCursive.addActionListener(listenerCursiva);
+		mntmCursiva.addActionListener(listenerCursiva);
 
-		
 		/**
 		 * Damos funcionalidad a la negrita
 		 * 
-		 * */
+		 */
 
-		//Cuando clicas en la foto de negrita...
+		// Cuando clicas en la foto de negrita...
 
-		btnBold.addMouseListener(new MouseAdapter() {
+		ActionListener listenerNegrita = new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
 				StyledDocument doc = editorPane.getStyledDocument();
-				//cogemos un elemento del texto seleccionado para saber si esta en cursiva
+				// cogemos un elemento del texto seleccionado para saber si esta
+				// en cursiva
 				Element element = doc.getCharacterElement(indices[0]);
-				AttributeSet as = element.getAttributes();				
+				AttributeSet as = element.getAttributes();
 				Style style = editorPane.getStyle("Bold");
-				if(!StyleConstants.isBold(as)){
-				    StyleConstants.setBold(style, true);
+				if (!StyleConstants.isBold(as)) {
+					StyleConstants.setBold(style, true);
+				} else {
+					StyleConstants.setBold(style, false);
+
 				}
-				else
-				{
-				    StyleConstants.setBold(style, false);
-				   
-				}
-				 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);			    
+				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
 
 			}
-			
+
+		};
+		btnBold.addActionListener(listenerNegrita);
+		mntmNegrita.addActionListener(listenerNegrita);
+
+		// Funcionalidad para el subrayado
+		ActionListener listenerSubrayado = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				// cogemos un elemento del texto seleccionado para saber si esta
+				// en cursiva
+				Element element = doc.getCharacterElement(indices[0]);
+				AttributeSet as = element.getAttributes();
+				Style style = editorPane.getStyle("Underline");
+				if (!StyleConstants.isUnderline(as)) {
+					StyleConstants.setUnderline(style, true);
+				} else {
+					StyleConstants.setUnderline(style, false);
+
+				}
+				// aplicamos el estilo a la seleccion
+				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+			}
+		};
+		btnUnderline.addActionListener(listenerSubrayado);
+		mntmSubrayado.addActionListener(listenerSubrayado);
+
+		// Aumentar el tamanio de la fuente
+		btnMoreSize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("FontSize");
+				Element element = doc.getCharacterElement(indices[0]);
+				AttributeSet as = element.getAttributes();
+				StyleConstants.setFontSize(style, StyleConstants.getFontSize(as) + 2);
+				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+			}
+
+		});
+		// Disminiumos el tamanio de la fuente
+		btnLessSize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+				StyledDocument doc = editorPane.getStyledDocument();
+				Style style = editorPane.getStyle("FontSize");
+				Element element = doc.getCharacterElement(indices[0]);
+				AttributeSet as = element.getAttributes();
+				StyleConstants.setFontSize(style, StyleConstants.getFontSize(as) - 2);
+				doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+			}
+
 		});
 
-		//Cuando clicas en la foto de negrita...
+		cmbSize.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+					StyledDocument doc = editorPane.getStyledDocument();
+					Style style = editorPane.getStyle("FontSize");
+					StyleConstants.setFontSize(style, Integer.parseInt((String) cmbSize.getSelectedItem()));
+					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				}
+			}
 
-				btnUnderline.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
-						StyledDocument doc = editorPane.getStyledDocument();
-						//cogemos un elemento del texto seleccionado para saber si esta en cursiva
-						Element element = doc.getCharacterElement(indices[0]);
-						AttributeSet as = element.getAttributes();				
-						Style style = editorPane.getStyle("Underline");
-						if(!StyleConstants.isUnderline(as)){
-						    StyleConstants.setUnderline(style, true);
-						}
-						else
-						{
-						    StyleConstants.setUnderline(style, false);
-						   
-						}
-						//aplicamos el estilo a la seleccion
-						 doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+		});
+
+		// Cambiamos el tipo de fuente
+		cmbFuente.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					int[] indices = indicesSeleccion(editorPane.getSelectionStart(), editorPane.getSelectionEnd());
+					StyledDocument doc = editorPane.getStyledDocument();
+					Style style = editorPane.getStyle("FontFamily");
+					StyleConstants.setFontFamily(style, (String) cmbFuente.getSelectedItem());
+					doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);
+				}
+			}
+
+		});
+		// Listener para el boton de impresion
+		ActionListener printListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					boolean done = editorPane.print();
+					if (done) {
+						JOptionPane.showMessageDialog(null, "Impresion correcta");
+					} else {
+						JOptionPane.showMessageDialog(null, "Impresion no completada");
 					}
-				});
-				//Aumentar el tamanio de la fuente
-				btnMoreSize.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						int[] indices = indicesSeleccion(editorPane.getSelectionStart(),editorPane.getSelectionEnd());			    
-						StyledDocument doc = editorPane.getStyledDocument();						
-						Style style = editorPane.getStyle("Font");
-						Element element = doc.getCharacterElement(indices[0]);
-						AttributeSet as = element.getAttributes();
-						StyleConstants.setFontSize(style, StyleConstants.getFontSize(as)+2);
-						doc.setCharacterAttributes(indices[0], indices[1] - indices[0], style, false);						
-					}
-					
-				});
-				
-				
-				//Cambiamos el tipo de fuente 
-				 cmbFuente.addItemListener(new ItemListener() {
-				        @Override
-				        public void itemStateChanged(ItemEvent e) {
-				            if (e.getStateChange() == ItemEvent.SELECTED) {
-				            	
-				                editorPane.setFont(new Font((String) cmbFuente.getSelectedItem(), Font.ITALIC, 16));
-				            }
-				        }
-					
-				    });
+				} catch (Exception pex) {
+					JOptionPane.showMessageDialog(null, "Erorr al imprimir");
+					pex.printStackTrace();
+				}
+
+			}
+		};
+		btnImprimir.addActionListener(printListener);
+		mntmImprimir.addActionListener(printListener);
+
 	}
 
-/**
- * Metodo que devuelve el inicio y el fin de la seleccion  
- */
-private int[] indicesSeleccion(int start, int end){
-	int resultado[] = new int[2];
-    if (start == end) { // No selection, cursor position.
-        return null;
-    }
-    if (start > end) { // Backwards selection? 
-        resultado[0] = end;
-        resultado[1] = start;
-    }else{
-    	resultado[0] = start;
-    	resultado[1] = end;
-    }
-    return resultado;
+	/**
+	 * Metodo que devuelve el inicio y el fin de la seleccion
+	 */
+	private int[] indicesSeleccion(int start, int end) {
+		int resultado[] = new int[2];
+		if (start == end) { // No selection, cursor position.
+			resultado[0] = 0;
+			resultado[1] = 0;
+		}
+		if (start > end) { // Backwards selection?
+			resultado[0] = end;
+			resultado[1] = start;
+		} else {
+			resultado[0] = start;
+			resultado[1] = end;
+		}
+		return resultado;
+	}
 }
-}
-
-
-
