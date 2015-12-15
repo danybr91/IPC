@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -12,17 +15,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -46,18 +44,13 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Font;
-import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class EditorTXT extends JFrame {
@@ -70,7 +63,7 @@ public class EditorTXT extends JFrame {
 		// Ventana principal
 		setMinimumSize(new Dimension(640, 110));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 515);
+		setBounds(100, 100, 780, 515);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Redimensionar las imágenes de los iconos si es necesario
@@ -307,22 +300,10 @@ public class EditorTXT extends JFrame {
 		btnTextColor.setToolTipText("Color de texto");
 		btnTextColor.setIcon(new ImageIcon(EditorTXT.class.getResource("/res/textcolor16.png")));
 		
-		
 		// El menu aparecera en la posicion del invocador, que es el elemento contenedor
 		// (aqui se utiliza para determinar la posicion)
-		popupTextColor.setInvoker(btnTextColor);
+		popupTextColor.setInvoker(herramientas);
 		
-		
-		btnTextColor.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				popupTextColor.show(popupTextColor.getInvoker(),popupTextColor.getInvoker().getX(),
-						popupTextColor.getInvoker().getY());
-			}
-
-		});
-
 		JSeparator separator_4 = new JSeparator();
 		// Evita que el separador se extienda en la ventana (tamaño fijo)
 		separator_4.setMinimumSize(new Dimension(3, 15));
@@ -884,6 +865,16 @@ public class EditorTXT extends JFrame {
 
 		});
 
+		btnTextColor.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popupTextColor.show(popupTextColor.getInvoker(),popupTextColor.getInvoker().getX(),
+						popupTextColor.getInvoker().getY());
+			}
+
+		});
+		
 		// Asignacion de listeners
 		btnImprimir.addActionListener(printListener);
 		mntmImprimir.addActionListener(printListener);
