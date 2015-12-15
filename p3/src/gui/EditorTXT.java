@@ -518,6 +518,7 @@ public class EditorTXT extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {			    
 				final JFileChooser SaveAs = new JFileChooser();
+				SaveAs.setDialogTitle("Guardar Como...");
 				 int actionDialog = SaveAs.showOpenDialog(null);
 			      if (actionDialog != JFileChooser.APPROVE_OPTION) {
 			         return;
@@ -527,7 +528,7 @@ public class EditorTXT extends JFrame {
 			      try {
 			         outFile = new BufferedWriter(new FileWriter(fileName));
 
-			         editorPane.write(outFile);   // *** here: ***
+			         editorPane.write(outFile);   
 
 			      } catch (IOException ex) {
 			         ex.printStackTrace();
@@ -536,8 +537,7 @@ public class EditorTXT extends JFrame {
 			            try {
 			               outFile.close();
 			            } catch (IOException e) {
-			               // one of the few times that I think that it's OK
-			               // to leave this blank
+			            	
 			            }
 			         }
 			      }
@@ -862,8 +862,6 @@ public class EditorTXT extends JFrame {
 					boolean done = editorPane.print();
 					if (done) {
 						JOptionPane.showMessageDialog(null, "Impresion correcta");
-					} else {
-						JOptionPane.showMessageDialog(null, "Impresion no completada");
 					}
 				} catch (Exception pex) {
 					JOptionPane.showMessageDialog(null, "Erorr al imprimir");
